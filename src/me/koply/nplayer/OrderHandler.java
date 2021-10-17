@@ -2,6 +2,8 @@ package me.koply.nplayer;
 
 import java.util.Scanner;
 
+import static me.koply.nplayer.Main.*;
+
 public class OrderHandler {
 
     public static final Scanner SC = new Scanner(System.in);
@@ -17,6 +19,22 @@ public class OrderHandler {
             }
 
             if (entry.startsWith("play")) play(entry);
+            else if (entry.startsWith("pause")) SOUND_MANAGER.pause();
+            else if (entry.startsWith("resume")) SOUND_MANAGER.resume();
+            else if (entry.startsWith("stop")) SOUND_MANAGER.stop();
+            else if (entry.startsWith("gc")) System.gc();
+            else if (entry.startsWith("volume")) {
+                String[] splitted = entry.split(" ");
+                if (splitted.length < 1) continue;
+                Integer volume = Util.parseInt(splitted[1]);
+                if (volume == null) {
+                    Main.log.info("Invalid volume.");
+                } else {
+                    volume = volume > 100 ? 100 : volume < 0 ? 0 : volume;
+                    SOUND_MANAGER.setVolume(volume);
+                    Main.log.info("New volume: " + volume);
+                }
+            }
             else if (entry.startsWith("help")) {
                 println("hi keke");
             }

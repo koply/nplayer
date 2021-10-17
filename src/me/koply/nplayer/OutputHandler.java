@@ -10,9 +10,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
+import java.io.IOException;
+
 import static com.sedmelluq.discord.lavaplayer.format.StandardAudioDataFormats.*;
 
-public class OutputHandler extends Thread {
+public class OutputHandler implements Runnable {
 
     private final AudioPlayerManager playerManager;
     private final AudioPlayer player;
@@ -22,23 +24,52 @@ public class OutputHandler extends Thread {
         this.player = player;
     }
 
-    @Override
-    public void run() {
+    private boolean isPause = false;
+    public void pauseOutputLine() {
+        synchronized (this) {
+            isPause = true;
+        }
+    }
+
+    private AudioInputStream stream;
+    private SourceDataLine line;
+
+    private Thread workerThread = new Thread(this);
+
+    public void resumeOutputLine() {
+        isPause = false;
+        workerThread = null;
+        workerThread = new Thread(this);
+        workerThread.start();
+    }
+
+    public void prepareAndRun() {
         try {
             AudioDataFormat format = this.playerManager.getConfiguration().getOutputFormat();
-            AudioInputStream stream = AudioPlayerInputStream.createStream(this.player, format, 10000L, false);
-            SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, stream.getFormat());
-            SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-            line.open(stream.getFormat());
-            line.start();
+            AudioInputStream innerStream = AudioPlayerInputStream.createStream(this.player, format, 10000L, true);
+            SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, innerStream.getFormat());
+            SourceDataLine innerLine = (SourceDataLine) AudioSystem.getLine(info);
+            innerLine.open(innerStream.getFormat());
+            innerLine.start();
 
-            byte[] buffer = new byte[COMMON_PCM_S16_BE.maximumChunkSize()];
-            int chunkSize;
+            stream = innerStream;
+            line = innerLine;
+            workerThread.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    byte[] buffer = new byte[COMMON_PCM_S16_BE.maximumChunkSize()];
+    @Override
+    public void run() {
+        int chunkSize;
 
+        try {
             while ((chunkSize = stream.read(buffer)) >= 0) {
                 line.write(buffer, 0, chunkSize);
+                if (isPause) break;
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }

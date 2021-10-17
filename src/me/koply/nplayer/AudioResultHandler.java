@@ -7,8 +7,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 public class AudioResultHandler implements AudioLoadResultHandler {
 
-    private final TrackScheduler scheduler;
-    public AudioResultHandler(TrackScheduler scheduler) {
+    private final TrackManager scheduler;
+    public AudioResultHandler(TrackManager scheduler) {
         this.scheduler = scheduler;
     }
 

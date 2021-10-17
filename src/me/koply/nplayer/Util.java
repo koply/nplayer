@@ -17,6 +17,14 @@ public final class Util {
         }
     }
 
+    public static Integer parseInt(String entry) {
+        try {
+            return Integer.parseInt(entry);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     public static void printInformation(AudioTrack track) {
         AudioTrackInfo info = track.getInfo();
         Main.log.info(info.author + " - " + info.title + " ["+ Util.getKalanSure(info.length) +"]");

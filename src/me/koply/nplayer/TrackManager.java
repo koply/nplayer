@@ -8,14 +8,14 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class TrackScheduler extends AudioEventAdapter {
+public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
     public BlockingQueue<AudioTrack> getQueue()  { return queue; }
     private final OutputHandler outputHandler;
 
-    public TrackScheduler(AudioPlayer player, OutputHandler outputHandler) {
+    public TrackManager(AudioPlayer player, OutputHandler outputHandler) {
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
         this.outputHandler = outputHandler;
@@ -30,7 +30,7 @@ public class TrackScheduler extends AudioEventAdapter {
             Main.log.info("Added to queue:");
         } else {
             Main.log.info("Playing now:");
-            if (!outputHandler.isAlive()) outputHandler.start();
+            outputHandler.prepareAndRun();
         }
         Util.printInformation(track);
     }
