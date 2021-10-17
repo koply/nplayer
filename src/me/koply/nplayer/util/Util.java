@@ -1,7 +1,8 @@
-package me.koply.nplayer;
+package me.koply.nplayer.util;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import me.koply.nplayer.Main;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,6 +21,14 @@ public final class Util {
     public static Integer parseInt(String entry) {
         try {
             return Integer.parseInt(entry);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public static Float parseFloat(String entry) {
+        try {
+            return Float.parseFloat(entry);
         } catch (Exception ex) {
             return null;
         }

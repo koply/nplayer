@@ -1,5 +1,9 @@
 package me.koply.nplayer;
 
+import com.github.kwhat.jnativehook.GlobalScreen;
+import com.github.kwhat.jnativehook.NativeHookException;
+import me.koply.nplayer.keyhook.KeyListener;
+
 import javax.sound.sampled.LineUnavailableException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,6 +45,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        try {
+            GlobalScreen.registerNativeHook();
+            GlobalScreen.addNativeKeyListener(new KeyListener());
+        } catch (NativeHookException ex) {
+            System.err.println("There was a problem registering the native hook.");
+        }
+
         ORDER_HANDLER.startHandler(args);
     }
 }

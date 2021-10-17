@@ -26,9 +26,7 @@ public class OutputHandler implements Runnable {
 
     private boolean isPause = false;
     public void pauseOutputLine() {
-        synchronized (this) {
-            isPause = true;
-        }
+        isPause = true;
     }
 
     private AudioInputStream stream;
@@ -65,7 +63,9 @@ public class OutputHandler implements Runnable {
             ex.printStackTrace();
         }
     }
+
     byte[] buffer = new byte[COMMON_PCM_S16_BE.maximumChunkSize()];
+
     @Override
     public void run() {
         int chunkSize;
