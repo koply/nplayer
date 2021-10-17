@@ -46,7 +46,7 @@ public class OutputHandler implements Runnable {
     public void prepareAndRun() {
         try {
             AudioDataFormat format = this.playerManager.getConfiguration().getOutputFormat();
-            AudioInputStream innerStream = AudioPlayerInputStream.createStream(this.player, format, 10000L, true);
+            AudioInputStream innerStream = AudioPlayerInputStream.createStream(this.player, format, 10000L, false);
             SourceDataLine.Info info = new DataLine.Info(SourceDataLine.class, innerStream.getFormat());
             SourceDataLine innerLine = (SourceDataLine) AudioSystem.getLine(info);
             innerLine.open(innerStream.getFormat());
@@ -54,7 +54,13 @@ public class OutputHandler implements Runnable {
 
             stream = innerStream;
             line = innerLine;
-            workerThread.start();
+            if (isPause) {
+                workerThread = new Thread(this);
+                isPause = false;
+            }
+            if (!workerThread.isAlive()) {
+                workerThread.start();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
