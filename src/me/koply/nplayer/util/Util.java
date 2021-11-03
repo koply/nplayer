@@ -9,6 +9,8 @@ import java.net.URISyntaxException;
 
 public final class Util {
 
+    public static final StringBuilder sb = new StringBuilder();
+
     public static boolean isUrl(String url) {
         try {
             new URI(url);
@@ -47,32 +49,30 @@ public final class Util {
         final long hour = (ms / 3_600_000) % 24;
         final long day = (ms/3_600_000) / 24;
 
-        final StringBuilder sb = new StringBuilder();
         short k = 0;
-        if (day != 0) {
-            sb.append(day).append(" gün");
-            k++;
-        }
-        if (hour != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(hour).append(" saat");
-            k++;
-        }
-        if (minute != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(minute).append(" dakika");
-            k++;
-        }
-        if (second != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(second).append(" saniye");
-            k++;
-        }
-        if (millis != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(millis).append(" milisaniye");
-        }
+
+        appendDateTime(day != 0, k, day," gün", "DA");
+        appendDateTime(hour != 0, k, hour, " saat", "HO");
+        appendDateTime(minute != 0, k, minute, " dakika", "MI");
+        appendDateTime(second != 0, k, second, " saniye", "SE");
+        appendDateTime(millis != 0, k, millis, " milisaniye", "MIL");
+
         return sb.toString();
+    }
+
+    public static void appendDateTime(boolean condition, int k, long dateTime, String suffix, String dateTimeCode){
+        if(condition){
+
+            if (k!=0 && dateTimeCode != "DA"){
+                sb.append(", ");
+            }
+
+            sb.append(dateTime).append(suffix);
+
+            if(dateTimeCode != "MIL"){
+                k++;
+            }
+        }
     }
 
 }
