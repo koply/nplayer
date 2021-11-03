@@ -1,13 +1,15 @@
 package me.koply.nplayer.cmdsys;
 
 import me.koply.nplayer.Main;
-import me.koply.nplayer.SoundManager;
+import me.koply.nplayer.sound.SoundManager;
 import org.reflections8.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+
+import static me.koply.nplayer.cmdsys.CommandClassData.*;
 
 public class OrderHandler {
 
@@ -31,7 +33,7 @@ public class OrderHandler {
 
             // the class must be public
             if ((clazz.getModifiers() & Modifier.PUBLIC) != Modifier.PUBLIC) continue;
-            Map<String, Method> commandMethodsWithAliases = new HashMap<>();
+            Map<String, MethodAndAnnotation> commandMethodsWithAliases = new HashMap<>();
             Method[] methods = clazz.getDeclaredMethods();
 
             for (Method method : methods) {
@@ -41,8 +43,9 @@ public class OrderHandler {
                 Class<?>[] types = method.getParameterTypes();
                 if (types.length == 1 && types[0] == CommandEvent.class) {
                     /* void command(CommandEvent e); */
+                    MethodAndAnnotation maa = new MethodAndAnnotation(method, annotation);
                     for (String usage : annotation.usages()) {
-                        commandMethodsWithAliases.put(usage, method);
+                        commandMethodsWithAliases.put(usage, maa);
                     }
                 }
             }
@@ -81,7 +84,7 @@ public class OrderHandler {
 
     private void callCommandMethod(CommandEvent event, CommandClassData ccd) {
         try {
-            ccd.getMethods().get(event.getArgs()[0]).invoke(ccd.getInstance(), event);
+            ccd.methods.get(event.getArgs()[0]).method.invoke(ccd.instance, event);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

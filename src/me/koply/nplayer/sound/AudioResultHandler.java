@@ -1,9 +1,10 @@
-package me.koply.nplayer;
+package me.koply.nplayer.sound;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.koply.nplayer.Main;
 import me.koply.nplayer.util.Util;
 
 public class AudioResultHandler implements AudioLoadResultHandler {
@@ -18,10 +19,12 @@ public class AudioResultHandler implements AudioLoadResultHandler {
         isOrderPlaylist = x;
     }
 
+    @Override
     public void trackLoaded(AudioTrack audioTrack) {
         Main.log.info("TrackLoaded: " + audioTrack.getInfo().title);
     }
 
+    @Override
     public void playlistLoaded(AudioPlaylist audioPlaylist) {
         if (isOrderPlaylist) {
             long totalDuration = 0;
@@ -51,10 +54,12 @@ public class AudioResultHandler implements AudioLoadResultHandler {
         }
     }
 
+    @Override
     public void noMatches() {
         Main.log.info("I cant find that entry.");
     }
 
+    @Override
     public void loadFailed(FriendlyException e) {
         Main.log.info("Something happened. " + e.getMessage());
     }

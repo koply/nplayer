@@ -1,9 +1,10 @@
-package me.koply.nplayer;
+package me.koply.nplayer.sound;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import me.koply.nplayer.Main;
 import me.koply.nplayer.util.Util;
 
 import java.util.concurrent.BlockingQueue;

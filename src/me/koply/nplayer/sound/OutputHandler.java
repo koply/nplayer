@@ -1,4 +1,4 @@
-package me.koply.nplayer;
+package me.koply.nplayer.sound;
 
 import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.format.AudioPlayerInputStream;

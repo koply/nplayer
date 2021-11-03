@@ -1,9 +1,10 @@
-package me.koply.nplayer;
+package me.koply.nplayer.sound;
 
 import com.sedmelluq.discord.lavaplayer.filter.equalizer.EqualizerFactory;
 import com.sedmelluq.discord.lavaplayer.player.*;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.koply.nplayer.Main;
 
 import javax.sound.sampled.*;
 
@@ -11,6 +12,7 @@ import static com.sedmelluq.discord.lavaplayer.format.StandardAudioDataFormats.*
 
 public class SoundManager {
 
+    // singleton
     private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
     private static final AudioPlayer player = playerManager.createPlayer();
     private static final EqualizerFactory equalizerFactory = new EqualizerFactory();
@@ -27,7 +29,7 @@ public class SoundManager {
 
     public static void shutdown() {
         playerManager.shutdown();
-        outputHandler.pauseOutputLine();
+        outputHandler.shutdownThread();
     }
 
     // IDK WTF IS THIS

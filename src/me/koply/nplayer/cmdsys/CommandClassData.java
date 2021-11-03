@@ -5,25 +5,24 @@ import java.util.Map;
 
 public class CommandClassData {
 
-    public CommandClassData(Class<? extends CLICommand> clazz, CLICommand instance, Map<String, Method> methods) {
+    public CommandClassData(Class<? extends CLICommand> clazz, CLICommand instance, Map<String, MethodAndAnnotation> methods) {
         this.clazz = clazz;
         this.instance = instance;
         this.methods = methods;
     }
 
-    private final Class<? extends CLICommand> clazz;
-    private final CLICommand instance;
-    private final Map<String, Method> methods;
+    public final Class<? extends CLICommand> clazz;
+    public final CLICommand instance;
+    public final Map<String, MethodAndAnnotation> methods;
 
-    public Class<? extends CLICommand> getClazz() {
-        return clazz;
-    }
+    // struct :(
+    public static class MethodAndAnnotation {
+        public final Method method;
+        public final Command annotation;
 
-    public CLICommand getInstance() {
-        return instance;
-    }
-
-    public Map<String, Method> getMethods() {
-        return methods;
+        public MethodAndAnnotation(Method method, Command annotation) {
+            this.method = method;
+            this.annotation = annotation;
+        }
     }
 }
