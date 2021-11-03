@@ -34,6 +34,12 @@ public class OutputHandler implements Runnable {
 
     private Thread workerThread = new Thread(this);
 
+    public void shutdownThread() {
+        pauseOutputLine();
+        if (!workerThread.isInterrupted() && workerThread.isAlive()) workerThread.interrupt();
+        workerThread = null;
+    }
+
     public void resumeOutputLine() {
         isPause = false;
         workerThread = null;

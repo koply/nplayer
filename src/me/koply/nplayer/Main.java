@@ -1,7 +1,6 @@
 package me.koply.nplayer;
 
-import com.github.kwhat.jnativehook.GlobalScreen;
-import com.github.kwhat.jnativehook.NativeHookException;
+import me.koply.nplayer.cmdsys.OrderHandler;
 import me.koply.nplayer.keyhook.KeyListener;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -15,19 +14,7 @@ import java.util.logging.Logger;
 
 public class Main {
 
-    private static final OrderHandler ORDER_HANDLER = new OrderHandler();
-    public static SoundManager SOUND_MANAGER;
-
-    static {
-        try {
-            SOUND_MANAGER = new SoundManager();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static final Logger log = Logger.getLogger("NPlayer: ");
-
     static {
         log.setUseParentHandlers(false);
         ConsoleHandler consoleHandler = new ConsoleHandler();
@@ -36,22 +23,27 @@ public class Main {
 
             @Override
             public String format(LogRecord record) {
-                final String[] splitted = record.getSourceClassName().split("\\.");
-                final String name = splitted[splitted.length-1];
-                return String.format("[%s] %s -> %s\n", formatter.format(new Date(record.getMillis())), name, record.getMessage());
+                /* Unnecessary for now: final String[] splitted = record.getSourceClassName().split("\\.");
+                 final String name = splitted[splitted.length-1]; */
+                final String date = formatter.format(new Date(record.getMillis()));
+                return "[" + date + "] -> " + record.getMessage() + "\n";
             }
         });
         log.addHandler(consoleHandler);
     }
 
+    private static final OrderHandler ORDER_HANDLER = new OrderHandler();
+    public static SoundManager SOUND_MANAGER;
+    private static final KeyListener keyListener = new KeyListener();
+
     public static void main(String[] args) {
+        keyListener.registerHook();
         try {
-            GlobalScreen.registerNativeHook();
-            GlobalScreen.addNativeKeyListener(new KeyListener());
-        } catch (NativeHookException ex) {
-            System.err.println("There was a problem registering the native hook.");
+            SOUND_MANAGER = new SoundManager();
+        } catch (LineUnavailableException ex) {
+            log.info("There is a problem while initializing the sound system.");
         }
 
-        ORDER_HANDLER.startHandler(args);
+        ORDER_HANDLER.startNewHandler();
     }
 }
