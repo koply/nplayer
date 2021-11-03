@@ -19,6 +19,11 @@ public class OrderHandler {
         }
     }
 
+    public static final Map<String, CommandClassData> COMMAND_CLASSES = new HashMap<>();
+    private static void registerCommand(Set<String> commandAliases, CommandClassData clazz) {
+        for (String str : commandAliases) COMMAND_CLASSES.put(str, clazz);
+    }
+
     private void registerCommands() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Reflections reflections = new Reflections("me.koply.nplayer.commands");
         Set<Class<? extends CLICommand>> classes = reflections.getSubTypesOf(CLICommand.class);
@@ -44,7 +49,7 @@ public class OrderHandler {
 
             CLICommand instance = clazz.getDeclaredConstructor().newInstance();
             CommandClassData commandClassData = new CommandClassData(clazz, instance, commandMethodsWithAliases);
-            CommandDataManager.registerCommand(commandMethodsWithAliases.keySet(), commandClassData);
+            registerCommand(commandMethodsWithAliases.keySet(), commandClassData);
         }
     }
 
@@ -59,7 +64,7 @@ public class OrderHandler {
             String entry = SC.nextLine().trim();
             String[] args = entry.split(" ");
 
-            if (!CommandDataManager.COMMAND_CLASSES.containsKey(args[0])) {
+            if (!COMMAND_CLASSES.containsKey(args[0])) {
                 Main.log.info("There is no command for this entry.");
                 continue;
             }
@@ -68,7 +73,7 @@ public class OrderHandler {
                 SoundManager.shutdown();
             }
 
-            CommandClassData ccd = CommandDataManager.COMMAND_CLASSES.get(args[0]);
+            CommandClassData ccd = COMMAND_CLASSES.get(args[0]);
             CommandEvent event = new CommandEvent(args, entry);
             callCommandMethod(event, ccd);
         }
