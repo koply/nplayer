@@ -1,4 +1,4 @@
-package me.koply.nplayer.cmdsys;
+package me.koply.nplayer.api.command;
 
 public class CommandEvent {
 

@@ -1,4 +1,4 @@
-package me.koply.nplayer.cmdsys;
+package me.koply.nplayer.api.command;
 
 import java.lang.reflect.Method;
 import java.util.Map;

@@ -1,6 +1,10 @@
-package me.koply.nplayer.cmdsys;
+package me.koply.nplayer.commands;
 
 import me.koply.nplayer.Main;
+import me.koply.nplayer.api.command.CLICommand;
+import me.koply.nplayer.api.command.Command;
+import me.koply.nplayer.api.command.CommandClassData;
+import me.koply.nplayer.api.command.CommandEvent;
 import me.koply.nplayer.sound.SoundManager;
 import org.reflections8.Reflections;
 
@@ -9,16 +13,26 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-import static me.koply.nplayer.cmdsys.CommandClassData.*;
+import static me.koply.nplayer.api.command.CommandClassData.*;
 
 public class OrderHandler {
 
-    public OrderHandler() {
+    public OrderHandler(String...packages) {
+        if (packages.length == 0) throw new IllegalArgumentException("Packages cannot be empty.");
+        Set<Class<? extends CLICommand>> classes = new HashSet<>();
+        for (String cake : packages) {
+            classes.addAll(getClasses(cake));
+        }
         try {
-            registerCommands();
+            registerCommands(classes);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private Set<Class<? extends CLICommand>> getClasses(String cake) {
+        Reflections reflections = new Reflections(cake);
+        return reflections.getSubTypesOf(CLICommand.class);
     }
 
     public static final Map<String, CommandClassData> COMMAND_CLASSES = new HashMap<>();
@@ -26,13 +40,12 @@ public class OrderHandler {
         for (String str : commandAliases) COMMAND_CLASSES.put(str, clazz);
     }
 
-    private void registerCommands() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Reflections reflections = new Reflections("me.koply.nplayer.commands");
-        Set<Class<? extends CLICommand>> classes = reflections.getSubTypesOf(CLICommand.class);
+    private void registerCommands(Set<Class<? extends CLICommand>> classes) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         for (Class<? extends CLICommand> clazz : classes) {
 
             // the class must be public
-            if ((clazz.getModifiers() & Modifier.PUBLIC) != Modifier.PUBLIC) continue;
+            // bitwise way to do this: (clazz.getModifiers() & Modifier.PUBLIC) != Modifier.PUBLIC
+            if (!Modifier.isPublic(clazz.getModifiers())) continue;
             Map<String, MethodAndAnnotation> commandMethodsWithAliases = new HashMap<>();
             Method[] methods = clazz.getDeclaredMethods();
 

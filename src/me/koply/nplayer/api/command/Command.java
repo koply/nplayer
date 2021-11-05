@@ -1,4 +1,4 @@
-package me.koply.nplayer.cmdsys;
+package me.koply.nplayer.api.command;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

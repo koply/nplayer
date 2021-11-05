@@ -1,6 +1,6 @@
 package me.koply.nplayer;
 
-import me.koply.nplayer.cmdsys.OrderHandler;
+import me.koply.nplayer.commands.OrderHandler;
 import me.koply.nplayer.keyhook.KeyListener;
 import me.koply.nplayer.sound.SoundManager;
 
@@ -33,7 +33,7 @@ public class Main {
         log.addHandler(consoleHandler);
     }
 
-    private static final OrderHandler ORDER_HANDLER = new OrderHandler();
+    private static final OrderHandler ORDER_HANDLER = new OrderHandler("me.koply.nplayer.commands");
     public static SoundManager SOUND_MANAGER;
     private static final KeyListener keyListener = new KeyListener();
 

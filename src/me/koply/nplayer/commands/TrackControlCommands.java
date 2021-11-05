@@ -2,9 +2,9 @@ package me.koply.nplayer.commands;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.koply.nplayer.Main;
-import me.koply.nplayer.cmdsys.CLICommand;
-import me.koply.nplayer.cmdsys.Command;
-import me.koply.nplayer.cmdsys.CommandEvent;
+import me.koply.nplayer.api.command.CLICommand;
+import me.koply.nplayer.api.command.Command;
+import me.koply.nplayer.api.command.CommandEvent;
 import me.koply.nplayer.util.TrackBoxBuilder;
 import me.koply.nplayer.util.Util;
 

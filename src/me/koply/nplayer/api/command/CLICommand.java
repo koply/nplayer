@@ -1,6 +1,7 @@
-package me.koply.nplayer.cmdsys;
+package me.koply.nplayer.api.command;
 
 import me.koply.nplayer.Main;
+import me.koply.nplayer.commands.OrderHandler;
 
 import java.util.Scanner;
 

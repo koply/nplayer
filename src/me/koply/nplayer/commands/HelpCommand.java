@@ -1,13 +1,16 @@
 package me.koply.nplayer.commands;
 
-import me.koply.nplayer.cmdsys.*;
+import me.koply.nplayer.api.command.CLICommand;
+import me.koply.nplayer.api.command.Command;
+import me.koply.nplayer.api.command.CommandClassData;
+import me.koply.nplayer.api.command.CommandEvent;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static me.koply.nplayer.cmdsys.CommandClassData.*;
+import static me.koply.nplayer.api.command.CommandClassData.*;
 
 public class HelpCommand implements CLICommand {
 

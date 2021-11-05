@@ -1,4 +1,4 @@
-package me.koply.nplayer.event;
+package me.koply.nplayer.api.event;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -11,15 +11,12 @@ public class PlayEvent extends AudioEvent {
     // the track now playing
     public final AudioTrack track;
     public final AudioTrackInfo info;
-    public final AudioPlayer player;
-    public final AudioPlayerManager playerManager;
     public final SoundManager soundManager;
 
     public PlayEvent(AudioTrack track, AudioTrackInfo info, AudioPlayer player, AudioPlayerManager playerManager, SoundManager soundManager) {
+        super(player, playerManager);
         this.track = track;
         this.info = info;
-        this.player = player;
-        this.playerManager = playerManager;
         this.soundManager = soundManager;
     }
 }
