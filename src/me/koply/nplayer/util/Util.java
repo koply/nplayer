@@ -40,21 +40,23 @@ public final class Util {
         Main.log.info(info.author + " - " + info.title + " ["+ Util.formatMilliSecond(info.length) +"]");
     }
 
-    
-    public static String formatMilliSecond(final Long ms) {
-        long millis = ms;
+    static final long DAY = 86_400_000;
+    static final long HOUR = 3_600_000;
+    static final long MINUTE = 60_000;
+    static final long SECOND = 1_000;
 
-        long days = TimeUnit.MILLISECONDS.toDays(millis);
-        millis -= TimeUnit.DAYS.toMillis(days);
+    public static String formatMilliSecond(long millis) {
+        long days = millis / DAY;
+        millis -= days * DAY;
 
-        long hours = TimeUnit.MILLISECONDS.toHours(millis);
-        millis -= TimeUnit.HOURS.toMillis(hours);
+        long hours = millis / HOUR;
+        millis -= hours * HOUR;
 
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-        millis -= TimeUnit.MINUTES.toMillis(minutes);
+        long minutes = millis / MINUTE;
+        millis -= minutes * MINUTE;
 
-        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
-        millis -= TimeUnit.SECONDS.toMillis(seconds);
+        long seconds = millis / SECOND;
+        millis -= seconds * SECOND;
 
         StringBuilder builder = new StringBuilder();
 
