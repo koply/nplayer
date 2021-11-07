@@ -35,13 +35,13 @@ public class AudioResultHandler implements AudioLoadResultHandler {
                 totalDuration += audioPlaylist.getTracks().get(i).getInfo().length;
             }
             Main.log.info("Playlist added to queue.");
-            Main.log.info(audioPlaylist.getTracks().size() + " tracks with " + Util.getKalanSure(totalDuration));
+            Main.log.info(audioPlaylist.getTracks().size() + " tracks with " + Util.formatMilliSecond(totalDuration));
         } else {
             Main.log.info("Found tracks:");
 
             for (int i = 0; i<audioPlaylist.getTracks().size(); ++i) {
                 AudioTrack currentTrack = audioPlaylist.getTracks().get(i);
-                Main.log.info("[ " + i + " ] " + currentTrack.getInfo().title + " - " + Util.getKalanSure(currentTrack.getInfo().length));
+                Main.log.info("[ " + i + " ] " + currentTrack.getInfo().title + " - " + Util.formatMilliSecond(currentTrack.getInfo().length));
             }
 
             scheduler.queue(audioPlaylist.getTracks().get(0));

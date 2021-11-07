@@ -6,6 +6,7 @@ import me.koply.nplayer.Main;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
 public final class Util {
 
@@ -36,43 +37,41 @@ public final class Util {
 
     public static void printInformation(AudioTrack track) {
         AudioTrackInfo info = track.getInfo();
-        Main.log.info(info.author + " - " + info.title + " ["+ Util.getKalanSure(info.length) +"]");
+        Main.log.info(info.author + " - " + info.title + " ["+ Util.formatMilliSecond(info.length) +"]");
     }
 
-    // shitcode i know
-    public static String getKalanSure(final long ms) {
-        final long millis = ms % 1000;
-        final long second = (ms / 1000) % 60;
-        final long minute = (ms / 60_000) % 60;
-        final long hour = (ms / 3_600_000) % 24;
-        final long day = (ms/3_600_000) / 24;
+    
+    public static String formatMilliSecond(final Long ms) {
+        long millis = ms;
 
-        final StringBuilder sb = new StringBuilder();
-        short k = 0;
-        if (day != 0) {
-            sb.append(day).append(" gün");
-            k++;
+        long days = TimeUnit.MILLISECONDS.toDays(millis);
+        millis -= TimeUnit.DAYS.toMillis(days);
+
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        millis -= TimeUnit.HOURS.toMillis(hours);
+
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minutes);
+
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+        millis -= TimeUnit.SECONDS.toMillis(seconds);
+
+        StringBuilder builder = new StringBuilder();
+
+        if (days > 0) {
+            builder.append(days).append(" gün");
         }
-        if (hour != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(hour).append(" saat");
-            k++;
+        if (hours > 0) {
+            builder.append(" ").append(hours).append(" saat");
         }
-        if (minute != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(minute).append(" dakika");
-            k++;
+        if (minutes > 0) {
+            builder.append(" ").append(minutes).append(" dakika");
         }
-        if (second != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(second).append(" saniye");
-            k++;
+        if (seconds > 0) {
+            builder.append(" ").append(seconds).append(" saniye");
         }
-        if (millis != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(millis).append(" milisaniye");
-        }
-        return sb.toString();
+
+        return builder.toString();
     }
 
 }
