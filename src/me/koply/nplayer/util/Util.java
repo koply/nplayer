@@ -10,6 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 public final class Util {
 
+    private static final long DAY = 86_400_000;
+    private static final long HOUR = 3_600_000;
+    private static final long MINUTE = 60_000;
+    private static final long SECOND = 1_000;
+
     public static boolean isUrl(String url) {
         try {
             new URI(url);
@@ -39,11 +44,6 @@ public final class Util {
         AudioTrackInfo info = track.getInfo();
         Main.log.info(info.author + " - " + info.title + " ["+ Util.formatMilliSecond(info.length) +"]");
     }
-
-    static final long DAY = 86_400_000;
-    static final long HOUR = 3_600_000;
-    static final long MINUTE = 60_000;
-    static final long SECOND = 1_000;
 
     public static String formatMilliSecond(long millis) {
         long days = millis / DAY;
