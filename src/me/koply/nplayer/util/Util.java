@@ -72,7 +72,11 @@ public final class Util {
         if (seconds > 0) {
             builder.append(" ").append(seconds).append(" saniye");
         }
-
+/* is it really necessary?
+        if (millis > 0) {
+            builder.append(" ").append(millis).append(" mili saniye");
+        }
+ */
         return builder.toString();
     }
 
