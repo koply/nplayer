@@ -33,8 +33,9 @@ public class SoundManager {
     }
 
     // IDK WTF IS THIS
-    private static final float[] BASS_BOOST = { 0.2f, 0.15f, 0.1f, 0.05f, 0.0f, -0.05f, -0.1f, -0.1f, -0.1f, -0.1f, -0.1f,
-            -0.1f, -0.1f, -0.1f, -0.1f };
+    private static final float[] BASS_BOOST = { 0.2f, 0.15f, 0.1f, 0.05f, 0.0f,
+            -0.05f, -0.1f, -0.1f, -0.1f, -0.1f,
+            -0.1f, -0.1f, -0.1f, -0.1f, -0.1f };
 
     // -------------- PUBLIC API -----------------
     public void playTrack(String query, boolean isUrl) {

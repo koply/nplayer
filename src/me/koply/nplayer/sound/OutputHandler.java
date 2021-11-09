@@ -17,6 +17,7 @@ import static com.sedmelluq.discord.lavaplayer.format.StandardAudioDataFormats.*
 public class OutputHandler implements Runnable {
 
     private final AudioPlayerManager playerManager;
+    public AudioPlayerManager getPlayerManager() { return playerManager; }
     private final AudioPlayer player;
 
     public OutputHandler(AudioPlayerManager playerManager, AudioPlayer player) {
@@ -36,6 +37,7 @@ public class OutputHandler implements Runnable {
 
     public void shutdownThread() {
         pauseOutputLine();
+        if (workerThread == null) return;
         if (!workerThread.isInterrupted() && workerThread.isAlive()) workerThread.interrupt();
         workerThread = null;
     }

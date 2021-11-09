@@ -19,7 +19,7 @@ public class HelpCommand implements CLICommand {
         if (helpMessage != null) return helpMessage;
         StringBuilder sb = new StringBuilder();
         Set<Method> duplicateChecker = new HashSet<>();
-        for (Map.Entry<String, CommandClassData> entry : OrderHandler.COMMAND_CLASSES.entrySet()) {
+        for (Map.Entry<String, CommandClassData> entry : CommandHandler.COMMAND_CLASSES.entrySet()) {
             CommandClassData ccd = entry.getValue();
             for (Map.Entry<String, MethodAndAnnotation> innerEntry : ccd.methods.entrySet()) {
                 if (duplicateChecker.contains(innerEntry.getValue().method)) continue;

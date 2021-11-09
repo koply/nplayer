@@ -13,4 +13,8 @@ public abstract class AudioEvent {
         this.playerManager = playerManager;
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getName();
+    }
 }

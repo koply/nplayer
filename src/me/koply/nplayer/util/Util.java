@@ -6,9 +6,12 @@ import me.koply.nplayer.Main;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public final class Util {
+
+    public static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     private static final long DAY = 86_400_000L;
     private static final long HOUR = 3_600_000L;

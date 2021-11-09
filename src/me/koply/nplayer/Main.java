@@ -1,6 +1,8 @@
 package me.koply.nplayer;
 
-import me.koply.nplayer.commands.OrderHandler;
+import me.koply.nplayer.commands.CommandHandler;
+import me.koply.nplayer.event.AudioEventDebugger;
+import me.koply.nplayer.event.EventManager;
 import me.koply.nplayer.keyhook.KeyListener;
 import me.koply.nplayer.sound.SoundManager;
 
@@ -33,18 +35,22 @@ public class Main {
         log.addHandler(consoleHandler);
     }
 
-    private static final OrderHandler ORDER_HANDLER = new OrderHandler("me.koply.nplayer.commands");
     public static SoundManager SOUND_MANAGER;
     private static final KeyListener keyListener = new KeyListener();
+    private static final CommandHandler COMMAND_HANDLER = new CommandHandler("me.koply.nplayer.commands");
 
     public static void main(String[] args) {
-        keyListener.registerHook();
         try {
             SOUND_MANAGER = new SoundManager();
         } catch (LineUnavailableException ex) {
             log.info("There is a problem while initializing the sound system.");
         }
+        keyListener.registerHook();
 
-        ORDER_HANDLER.startNewHandler();
+        EventManager.registerListener(new AudioEventDebugger());
+        EventManager.debugListeners();
+
+        // blocks the main thread
+        COMMAND_HANDLER.startNewHandler();
     }
 }

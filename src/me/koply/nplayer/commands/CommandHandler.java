@@ -15,9 +15,9 @@ import java.util.*;
 
 import static me.koply.nplayer.api.command.CommandClassData.*;
 
-public class OrderHandler {
+public class CommandHandler {
 
-    public OrderHandler(String...packages) {
+    public CommandHandler(String...packages) {
         if (packages.length == 0) throw new IllegalArgumentException("Packages cannot be empty.");
         Set<Class<? extends CLICommand>> classes = new HashSet<>();
         for (String cake : packages) {
@@ -80,13 +80,14 @@ public class OrderHandler {
             String entry = SC.nextLine().trim();
             String[] args = entry.split(" ");
 
+            if (entry.equalsIgnoreCase("exit") || entry.equalsIgnoreCase("quit")) {
+                SoundManager.shutdown(); // TODO fix it
+                break;
+            }
+
             if (!COMMAND_CLASSES.containsKey(args[0])) {
                 Main.log.info("There is no command for this entry.");
                 continue;
-            }
-
-            if (entry.equalsIgnoreCase("exit") || entry.equalsIgnoreCase("quit")) {
-                SoundManager.shutdown();
             }
 
             CommandClassData ccd = COMMAND_CLASSES.get(args[0]);

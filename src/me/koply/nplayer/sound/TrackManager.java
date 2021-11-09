@@ -5,6 +5,8 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.koply.nplayer.Main;
+import me.koply.nplayer.api.event.PlayEvent;
+import me.koply.nplayer.event.EventManager;
 import me.koply.nplayer.util.Util;
 
 import java.util.concurrent.BlockingQueue;
@@ -34,6 +36,8 @@ public class TrackManager extends AudioEventAdapter {
             Main.log.info("Playing now:");
             outputHandler.prepareAndRun();
         }
+        EventManager.pushEvent(
+                new PlayEvent(track, track.getInfo(), player, outputHandler.getPlayerManager(), Main.SOUND_MANAGER));
         Util.printInformation(track);
     }
 
