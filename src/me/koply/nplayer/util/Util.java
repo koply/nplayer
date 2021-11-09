@@ -6,8 +6,14 @@ import me.koply.nplayer.Main;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.TimeUnit;
 
 public final class Util {
+
+    private static final long DAY = 86_400_000L;
+    private static final long HOUR = 3_600_000L;
+    private static final long MINUTE = 60_000L;
+    private static final long SECOND = 1_000L;
 
     public static boolean isUrl(String url) {
         try {
@@ -36,43 +42,42 @@ public final class Util {
 
     public static void printInformation(AudioTrack track) {
         AudioTrackInfo info = track.getInfo();
-        Main.log.info(info.author + " - " + info.title + " ["+ Util.getKalanSure(info.length) +"]");
+        Main.log.info(info.author + " - " + info.title + " ["+ Util.formatMilliSecond(info.length) +"]");
     }
 
-    // shitcode i know
-    public static String getKalanSure(final long ms) {
-        final long millis = ms % 1000;
-        final long second = (ms / 1000) % 60;
-        final long minute = (ms / 60_000) % 60;
-        final long hour = (ms / 3_600_000) % 24;
-        final long day = (ms/3_600_000) / 24;
+    public static String formatMilliSecond(long millis) {
+        long days = millis / DAY;
+        millis -= days * DAY;
 
-        final StringBuilder sb = new StringBuilder();
-        short k = 0;
-        if (day != 0) {
-            sb.append(day).append(" gün");
-            k++;
+        long hours = millis / HOUR;
+        millis -= hours * HOUR;
+
+        long minutes = millis / MINUTE;
+        millis -= minutes * MINUTE;
+
+        long seconds = millis / SECOND;
+        millis -= seconds * SECOND;
+
+        StringBuilder builder = new StringBuilder();
+
+        if (days > 0) {
+            builder.append(days).append(" gün");
         }
-        if (hour != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(hour).append(" saat");
-            k++;
+        if (hours > 0) {
+            builder.append(" ").append(hours).append(" saat");
         }
-        if (minute != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(minute).append(" dakika");
-            k++;
+        if (minutes > 0) {
+            builder.append(" ").append(minutes).append(" dakika");
         }
-        if (second != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(second).append(" saniye");
-            k++;
+        if (seconds > 0) {
+            builder.append(" ").append(seconds).append(" saniye");
         }
-        if (millis != 0) {
-            if (k!=0) sb.append(", ");
-            sb.append(millis).append(" milisaniye");
+/* is it really necessary?
+        if (millis > 0) {
+            builder.append(" ").append(millis).append(" mili saniye");
         }
-        return sb.toString();
+ */
+        return builder.toString();
     }
 
 }
