@@ -27,6 +27,9 @@ public class TrackControlCommands implements CLICommand {
         }
     }
 
+    // play command is plays the first result
+    // TODO the search command for result selector
+
     @Command(usages = "pause")
     public void pause(CommandEvent e) {
         SOUND_MANAGER.pause();

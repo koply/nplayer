@@ -1,12 +1,10 @@
 package me.koply.nplayer.api.event;
 
-public abstract class PlayerListenerAdapter implements EventListener {
+public abstract class PlayerListenerAdapter {
 
     // TODO: make the other methods and event classes
-    public void onPlayEvent(PlayEvent e) { }
+    public void onPlay(PlayEvent e) { }
+    public void onTrackEnd(TrackEndEvent e) { }
+    public void onNextTrack(NextTrackEvent e) { }
 
-    @Override
-    public void onEvent(AudioEvent event) {
-
-    }
 }

@@ -5,7 +5,9 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.koply.nplayer.Main;
+import me.koply.nplayer.api.event.NextTrackEvent;
 import me.koply.nplayer.api.event.PlayEvent;
+import me.koply.nplayer.api.event.TrackEndEvent;
 import me.koply.nplayer.event.EventManager;
 import me.koply.nplayer.util.Util;
 
@@ -36,12 +38,13 @@ public class TrackManager extends AudioEventAdapter {
             Main.log.info("Playing now:");
             outputHandler.prepareAndRun();
         }
-        EventManager.pushEvent(
-                new PlayEvent(track, track.getInfo(), player, outputHandler.getPlayerManager(), Main.SOUND_MANAGER));
         Util.printInformation(track);
+
+        EventManager.pushEvent(
+                new PlayEvent(Main.SOUND_MANAGER, track, !isStarted));
     }
 
-    public void nextTrack() {
+    public void nextTrack(AudioTrack lastTrack) {
         AudioTrack poll = queue.poll();
         if (poll == null) {
             Main.log.info("Empty queue..");
@@ -51,6 +54,9 @@ public class TrackManager extends AudioEventAdapter {
         player.startTrack(poll, false);
         Main.log.info("Playing now:");
         Util.printInformation(poll);
+
+        EventManager.pushEvent(
+                new NextTrackEvent(Main.SOUND_MANAGER, lastTrack, poll));
     }
 
     @Override
@@ -59,8 +65,10 @@ public class TrackManager extends AudioEventAdapter {
         Main.log.info("OnTrackEnd called. " + endReason.name());
         if (queue.size() == 0) {
             Main.log.info("Last track is over. Empty queue.");
+            EventManager.pushEvent(
+                    new TrackEndEvent(Main.SOUND_MANAGER, track, endReason));
         } else if (endReason.mayStartNext) {
-            nextTrack();
+            nextTrack(track);
         }
      }
 }
