@@ -41,7 +41,7 @@ public class TrackManager extends AudioEventAdapter {
         Util.printInformation(track);
 
         EventManager.pushEvent(
-                new PlayEvent(Main.SOUND_MANAGER, track, !isStarted));
+                new PlayEvent(Main.soundManager, track, !isStarted));
     }
 
     public void nextTrack(AudioTrack lastTrack) {
@@ -56,7 +56,7 @@ public class TrackManager extends AudioEventAdapter {
         Util.printInformation(poll);
 
         EventManager.pushEvent(
-                new NextTrackEvent(Main.SOUND_MANAGER, lastTrack, poll));
+                new NextTrackEvent(Main.soundManager, lastTrack, poll));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TrackManager extends AudioEventAdapter {
         if (queue.size() == 0) {
             Main.log.info("Last track is over. Empty queue.");
             EventManager.pushEvent(
-                    new TrackEndEvent(Main.SOUND_MANAGER, track, endReason));
+                    new TrackEndEvent(Main.soundManager, track, endReason));
         } else if (endReason.mayStartNext) {
             nextTrack(track);
         }

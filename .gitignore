@@ -2,3 +2,5 @@
 /target/
 /.idea
 dependency-reduced-pom.xml
+*.yml
+*.db

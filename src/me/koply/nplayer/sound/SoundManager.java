@@ -2,7 +2,7 @@ package me.koply.nplayer.sound;
 
 import com.sedmelluq.discord.lavaplayer.filter.equalizer.EqualizerFactory;
 import com.sedmelluq.discord.lavaplayer.player.*;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.koply.nplayer.Main;
 
@@ -21,7 +21,12 @@ public class SoundManager {
     private static final AudioResultHandler handler = new AudioResultHandler(scheduler);
 
     public SoundManager() throws LineUnavailableException {
-        AudioSourceManagers.registerRemoteSources(playerManager);
+
+        // we don't need a bunch of these sources
+        // AudioSourceManagers.registerRemoteSources(playerManager);
+        // just YouTube for now
+        playerManager.registerSourceManager(new YoutubeAudioSourceManager(true));
+
         playerManager.getConfiguration().setOutputFormat(COMMON_PCM_S16_BE);
         player.addListener(scheduler);
         setVolume(75);

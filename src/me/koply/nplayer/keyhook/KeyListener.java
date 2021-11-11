@@ -24,7 +24,7 @@ public class KeyListener implements NativeKeyListener {
     @Override
     public void nativeKeyPressed(NativeKeyEvent e) {
         if (e.getKeyCode() == 57378) {
-            Main.SOUND_MANAGER.playPauseButton();
+            Main.soundManager.playPauseButton();
         }
     }
 

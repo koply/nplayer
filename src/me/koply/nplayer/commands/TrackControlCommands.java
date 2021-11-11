@@ -8,7 +8,7 @@ import me.koply.nplayer.api.command.CommandEvent;
 import me.koply.nplayer.util.TrackBoxBuilder;
 import me.koply.nplayer.util.Util;
 
-import static me.koply.nplayer.Main.SOUND_MANAGER;
+import static me.koply.nplayer.Main.soundManager;
 
 public class TrackControlCommands implements CLICommand {
 
@@ -23,7 +23,7 @@ public class TrackControlCommands implements CLICommand {
                 order = "ytsearch: " + order;
                 isUrl = false;
             }
-            SOUND_MANAGER.playTrack(order, isUrl);
+            soundManager.playTrack(order, isUrl);
         }
     }
 
@@ -32,39 +32,39 @@ public class TrackControlCommands implements CLICommand {
 
     @Command(usages = "pause")
     public void pause(CommandEvent e) {
-        SOUND_MANAGER.pause();
+        soundManager.pause();
     }
 
     @Command(usages = "resume")
     public void resume(CommandEvent e) {
-        SOUND_MANAGER.resume();
+        soundManager.resume();
     }
 
     @Command(usages = "stop")
     public void stop(CommandEvent e) {
-        SOUND_MANAGER.stop();
+        soundManager.stop();
     }
 
     @Command(usages = "volume")
     public void volume(CommandEvent e) {
         if (e.getArgs().length < 1) {
-           println("Current volume: " + SOUND_MANAGER.getVolume());
+           println("Current volume: " + soundManager.getVolume());
         }
         Integer volume = Util.parseInt(e.getArgs()[1]);
         if (volume == null) {
-            Main.log.info("Invalid volume. Current volume: " + SOUND_MANAGER.getVolume());
+            Main.log.info("Invalid volume. Current volume: " + soundManager.getVolume());
         } else {
             volume = volume > 100 ? 100 : volume < 0 ? 0 : volume;
-            SOUND_MANAGER.setVolume(volume);
+            soundManager.setVolume(volume);
             Main.log.info("New volume: " + volume);
         }
     }
 
     @Command(usages = "now")
     public void nowPlaying(CommandEvent e) {
-        AudioTrack nowPlayin = SOUND_MANAGER.getPlayingTrack();
-        boolean isPause = SOUND_MANAGER.isPaused();
-        int volume = SOUND_MANAGER.getVolume();
+        AudioTrack nowPlayin = soundManager.getPlayingTrack();
+        boolean isPause = soundManager.isPaused();
+        int volume = soundManager.getVolume();
         if (nowPlayin == null) {
             println("Silence...");
         } else {
@@ -74,7 +74,7 @@ public class TrackControlCommands implements CLICommand {
 
     @Command(usages = "eq")
     public void eq(CommandEvent e) {
-        SOUND_MANAGER.activeEqualizer();
+        soundManager.activeEqualizer();
         // 0 1     2 3
         // eq bass + 1
         if (e.getArgs().length <= 3) {
@@ -86,9 +86,9 @@ public class TrackControlCommands implements CLICommand {
                 return;
             }
             if (e.getArgs()[2].equals("+")) {
-                SOUND_MANAGER.increaseBassBoost(diff);
+                soundManager.increaseBassBoost(diff);
             } else if (e.getArgs()[2].equals("-")) {
-                SOUND_MANAGER.decreaseBassBoost(diff);
+                soundManager.decreaseBassBoost(diff);
             }
         }
     }
